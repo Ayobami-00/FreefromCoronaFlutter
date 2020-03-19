@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,6 +16,7 @@ class UserProvider with ChangeNotifier{
   Status get status => _status;
   FirebaseUser get user => _user;
   Firestore _firestore = Firestore.instance;
+  var _firebaseRef = FirebaseDatabase().reference().child('users');
   // UserServices _userServices = UserServices();
 
 
@@ -37,15 +39,20 @@ class UserProvider with ChangeNotifier{
   }
 
 
-  Future<bool> signUp(String name,String email, String password)async{
+  Future<bool> signUp(String name,String email, String password,String phonenumber,String gender,String dateOfBirth)async{
     try{
       _status = Status.Authenticating;
       notifyListeners();
       await _auth.createUserWithEmailAndPassword(email: email, password: password).then((user){
-        _firestore.collection('users').document(user.user.uid).setData({
+        _firebaseRef.child(user.user.uid).set({
+          'uid': user.user.uid,
           'name':name,
           'email':email,
-          'uid':user.user.uid
+          'phone': phonenumber,
+          'password': password,
+          'gender': gender,
+          'dateOfBirth': dateOfBirth,
+
         });
       });
       return true;

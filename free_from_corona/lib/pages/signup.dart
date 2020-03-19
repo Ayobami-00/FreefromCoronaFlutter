@@ -161,14 +161,13 @@ class _SignUpState extends State<SignUp> {
                               Alignment.centerRight, // default bottomRight
                           selectedGenderCheckIcon: null, // default Icons.check
                           onChanged: (Gender gender) {
-                            if(gender.toString() == 'Gender.Male'){
+                            if (gender.toString() == 'Gender.Male') {
                               selectedGender = 'male';
                               print(selectedGender);
-                            }else{
+                            } else {
                               selectedGender = 'female';
                               print(selectedGender);
                             }
-                            
                           },
                           equallyAligned: true,
                           animationDuration: Duration(milliseconds: 400),
@@ -195,10 +194,10 @@ class _SignUpState extends State<SignUp> {
                                   minTime: DateTime(2018, 3, 5),
                                   maxTime: DateTime(2019, 6, 7),
                                   onChanged: (date) {
-                                    dateOfBirth = date;
+                                dateOfBirth = date;
                                 print('change $date');
                               }, onConfirm: (date) {
-                                 dateOfBirth = date;
+                                dateOfBirth = date;
                                 print('confirm $date');
                               },
                                   currentTime: DateTime.now(),
@@ -235,11 +234,19 @@ class _SignUpState extends State<SignUp> {
                       top: 635.0,
                       bottom: 80.0,
                       child: FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUp()));
+                        onPressed: () async{
+                          if (_formKey.currentState.validate()){
+                            if (!await user.signUp(
+                                _name.text, _email.text, _password.text,_phonenumber.text,selectedGender,dateOfBirth.toString())) {
+                              _key.currentState.showSnackBar(
+                                  SnackBar(content: Text("Sign up failed")));
+                              return;
+                            }
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()));
+                          }
                         },
                         child: Text('SIGN UP',
                             style: TextStyle(
