@@ -47,7 +47,7 @@ class _LoginState extends State<Login> {
                           child: ListView(
                             children: <Widget>[
                               SizedBox(
-                                height: 40,
+                                height: 100,
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
@@ -81,7 +81,9 @@ class _LoginState extends State<Login> {
                                               r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
                                           RegExp regex = new RegExp(pattern);
                                           if (!regex.hasMatch(value))
-                                            return 'Please make sure your email address is valid';
+                                            _key.currentState.showSnackBar(SnackBar(
+                                                content: Text(
+                                                    'Please make sure your email address is valid')));
                                           else
                                             return null;
                                         }
@@ -109,9 +111,13 @@ class _LoginState extends State<Login> {
                                       ),
                                       validator: (value) {
                                         if (value.isEmpty) {
-                                          return "The password field cannot be empty";
+                                          _key.currentState.showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "The password field cannot be empty")));
                                         } else if (value.length < 6) {
-                                          return "the password has to be at least 6 characters long";
+                                          _key.currentState.showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "The password has to be at least 6 characters long")));
                                         }
                                         return null;
                                       },
@@ -165,6 +171,19 @@ class _LoginState extends State<Login> {
                                       ),
                                     )),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    120.0, 160.0, 80.0, 8.0),
+                                child: InkWell(
+                                  onTap: (){},
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(Icons.search,size: 60.0,color: Colors.white),
+                                      Text('Visit us',style: TextStyle(color:Colors.white)),
+                                    ],
+                                  ),
+                                ),
+                              )
                             ],
                           )),
                     ),

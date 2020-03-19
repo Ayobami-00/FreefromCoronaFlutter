@@ -31,6 +31,7 @@ class _SignUpState extends State<SignUp> {
     final user = Provider.of<UserProvider>(context);
 
     return Scaffold(
+        resizeToAvoidBottomPadding: false,
         key: _key,
         body: user.status == Status.Authenticating
             ? Loading()
